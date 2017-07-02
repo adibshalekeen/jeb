@@ -114,7 +114,7 @@ async def search_ticker(*args):
         for ticker in stocks[args]:
             url = 'https://ca.finance.yahoo.com/quote/'+ticker+'?p=' +ticker
             resp = requests.get(url=url)
-            soup = BeautifulSoup(resp.content)
+            soup = BeautifulSoup(resp.content, "html.parser")
             prices = soup.find_all("span", "Trsdu(0.3s) Fw(b) Fz(36px) Mb(-4px) D(ib)")
             requestedStocks[ticker] = prices[0].findAll(text=True)
         await bot.say(requestedStocks)
@@ -134,6 +134,7 @@ async def remove_ticker(*args):
          await bot.say(args[1] + ' was removed ' +args[0]+ ' , sorry for your losses, next time you should buy low and sell high')
         else:
          await bot.say("You arent subscribed to that stock")
+
 @bot.group(pass_context=True)
 async def please(ctx):
     if ctx.invoked_subcommand is not _clap:
